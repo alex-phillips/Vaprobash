@@ -2,14 +2,14 @@
 # vi: set ft=ruby :
 
 # Config Github Settings
-github_username = "fideloper"
+github_username = "exonintrendo"
 github_repo     = "Vaprobash"
 github_branch   = "1.4.0"
 github_url      = "https://raw.githubusercontent.com/#{github_username}/#{github_repo}/#{github_branch}"
 
 # Server Configuration
 
-hostname        = "vaprobash.dev"
+hostname        = "solitude.dev"
 
 # Set a local private network IP address.
 # See http://en.wikipedia.org/wiki/Private_network for explanation
@@ -17,7 +17,7 @@ hostname        = "vaprobash.dev"
 #   10.0.0.1    - 10.255.255.254
 #   172.16.0.1  - 172.31.255.254
 #   192.168.0.1 - 192.168.255.254
-server_ip             = "192.168.22.10"
+server_ip             = "192.168.151.2"
 server_cpus           = "1"   # Cores
 server_memory         = "384" # MB
 server_swap           = "768" # Options: false | int (MB) - Guideline: Between one or two times the server_memory
@@ -26,7 +26,7 @@ server_swap           = "768" # Options: false | int (MB) - Guideline: Between o
 # EST        for Eastern Standard Time
 # US/Central for American Central
 # US/Eastern for American Eastern
-server_timezone  = "UTC"
+server_timezone  = "American Eastern"
 
 # Database Configuration
 mysql_root_password   = "root"   # We'll assume user "root"
@@ -36,10 +36,10 @@ pgsql_root_password   = "root"   # We'll assume user "root"
 mongo_enable_remote   = "false"  # remote access enabled when true
 
 # Languages and Packages
-php_timezone          = "UTC"    # http://php.net/manual/en/timezones.php
-php_version           = "5.6"    # Options: 5.5 | 5.6
-ruby_version          = "latest" # Choose what ruby version should be installed (will also be the default version)
-ruby_gems             = [        # List any Ruby Gems that you want to install
+php_timezone          = "America/New_York"    # http://php.net/manual/en/timezones.php
+php_version           = "5.6"                 # Options: 5.5 | 5.6
+ruby_version          = "latest"              # Choose what ruby version should be installed (will also be the default version)
+ruby_gems             = [                     # List any Ruby Gems that you want to install
   #"jekyll",
   #"sass",
   #"compass",
@@ -85,7 +85,7 @@ Vagrant.configure("2") do |config|
   # Set server to Ubuntu 14.04
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.define "Vaprobash" do |vapro|
+  config.vm.define "Solitude" do |vapro|
   end
 
   if Vagrant.has_plugin?("vagrant-hostmanager")
@@ -113,7 +113,7 @@ Vagrant.configure("2") do |config|
   # If using VirtualBox
   config.vm.provider :virtualbox do |vb|
 
-    vb.name = "Vaprobash"
+    vb.name = "solitude"
 
     # Set server cpus
     vb.customize ["modifyvm", :id, "--cpus", server_cpus]
@@ -199,7 +199,7 @@ Vagrant.configure("2") do |config|
   # config.vm.provision "shell", path: "#{github_url}/scripts/apache.sh", args: [server_ip, public_folder, hostname, github_url]
 
   # Provision Nginx Base
-  # config.vm.provision "shell", path: "#{github_url}/scripts/nginx.sh", args: [server_ip, public_folder, hostname, github_url]
+  config.vm.provision "shell", path: "#{github_url}/scripts/nginx.sh", args: [server_ip, public_folder, hostname, github_url]
 
 
   ####
@@ -228,7 +228,7 @@ Vagrant.configure("2") do |config|
   # config.vm.provision "shell", path: "#{github_url}/scripts/mongodb.sh", args: mongo_enable_remote
 
   # Provision MariaDB
-  # config.vm.provision "shell", path: "#{github_url}/scripts/mariadb.sh", args: [mysql_root_password, mysql_enable_remote]
+  config.vm.provision "shell", path: "#{github_url}/scripts/mariadb.sh", args: [mysql_root_password, mysql_enable_remote]
 
   ####
   # Search Servers
@@ -289,17 +289,17 @@ Vagrant.configure("2") do |config|
   ##########
 
   # Install Nodejs
-  # config.vm.provision "shell", path: "#{github_url}/scripts/nodejs.sh", privileged: false, args: nodejs_packages.unshift(nodejs_version, github_url)
+  config.vm.provision "shell", path: "#{github_url}/scripts/nodejs.sh", privileged: false, args: nodejs_packages.unshift(nodejs_version, github_url)
 
   # Install Ruby Version Manager (RVM)
-  # config.vm.provision "shell", path: "#{github_url}/scripts/rvm.sh", privileged: false, args: ruby_gems.unshift(ruby_version)
+  config.vm.provision "shell", path: "#{github_url}/scripts/rvm.sh", privileged: false, args: ruby_gems.unshift(ruby_version)
 
   ####
   # Frameworks and Tooling
   ##########
 
   # Provision Composer
-  # config.vm.provision "shell", path: "#{github_url}/scripts/composer.sh", privileged: false, args: composer_packages.join(" ")
+  config.vm.provision "shell", path: "#{github_url}/scripts/composer.sh", privileged: false, args: composer_packages.join(" ")
 
   # Provision Laravel
   # config.vm.provision "shell", path: "#{github_url}/scripts/laravel.sh", privileged: false, args: [server_ip, laravel_root_folder, public_folder, laravel_version]
@@ -308,10 +308,10 @@ Vagrant.configure("2") do |config|
   # config.vm.provision "shell", path: "#{github_url}/scripts/symfony.sh", privileged: false, args: [server_ip, symfony_root_folder, public_folder]
 
   # Install Screen
-  # config.vm.provision "shell", path: "#{github_url}/scripts/screen.sh"
+  config.vm.provision "shell", path: "#{github_url}/scripts/screen.sh"
 
   # Install Mailcatcher
-  # config.vm.provision "shell", path: "#{github_url}/scripts/mailcatcher.sh"
+  config.vm.provision "shell", path: "#{github_url}/scripts/mailcatcher.sh"
 
   # Install git-ftp
   # config.vm.provision "shell", path: "#{github_url}/scripts/git-ftp.sh", privileged: false
